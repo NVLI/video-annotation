@@ -1,0 +1,26 @@
+<?php
+/**
+ * Implements hook_page_attachments().
+ *
+ * Adds the OpenVideoAnnotation library to the HTML5 player page
+ * @todo to patch this with video.js module with tickets (NVLI-111)
+ *
+ */
+function open_video_annotation_page_attachments(array &$page) {
+
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    if($node->getType() == 'article'){
+      $page['#attached']['library'][] = 'open_video_annotation/open_video_annotation.load_player';
+    }
+  }
+}
+/**
+ * Implements hook_js_alter().
+ * Open video annotation plugin will take care of video.min.js now
+ * unset video.min.js file from videojs module 
+ */
+function open_video_annotation_js_alter(&$javascript, \Drupal\Core\Asset\AttachedAssetsInterface $assets) {
+  unset($javascript['//vjs.zencdn.net/5.0/video.min.js']);
+}
+
+
