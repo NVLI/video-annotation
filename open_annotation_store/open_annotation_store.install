@@ -1,0 +1,116 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the open_annotation_store module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function open_annotation_store_schema() {
+  $schema = array();
+  $schema['video_annotation'] = array(
+    'description' => 'Stores annotations.',
+    'fields' => array(
+      'id' => array(
+        'description' => 'Primary Key: Unique item ID.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => t('user id of annotation owner'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'media' => array(
+            'description' => 'type of media',
+            'type' => 'varchar',
+            'length' => 32,
+            'not null' => TRUE,
+            'default' => '',
+        ),      
+        'type' => array(
+            'description' => 'The type of annotation.',
+            'type' => 'text',
+            'not null' => TRUE,
+            'size' => 'big',
+        ),
+        'text' => array(
+            'description' => 'content of annotation',
+            'type' => 'varchar',
+            'length' => 32,
+            'not null' => TRUE,
+            'default' => '',
+        ),
+        'uri' => array(
+            'description' => 'Type uri of this annotation.',
+            'type' => 'varchar',
+            'length' => 2048, // Maximum URLs length.
+            'not null' => TRUE,
+            'sortable' => TRUE
+        ),
+        'archived' => array(
+            'description' => 'whether archived or not',
+            'type' => 'varchar',
+            'length' => 32,
+            'not null' => TRUE,
+            'default' => '',
+        ),
+        'created' => array(
+            'description' => 'The creation datetime of the annotation.',
+            'type' => 'int',
+            'not null' => TRUE,
+            'default' => 0,
+        ),
+        'updated' => array(
+            'description' => 'The updated datetime of the annotation.',
+            'type' => 'int',
+            'not null' => TRUE,
+            'default' => 0,
+        ),
+       'target_container' => array(
+            'description' => 'container of video',
+            'type' => 'varchar',
+            'length' => 128,
+            'not null' => TRUE,
+            'default' => '',
+        ),
+        'target_ext' => array(
+            'description' => 'container of video',
+            'type' => 'varchar',
+            'length' => 32,
+            'not null' => TRUE,
+            'default' => '',
+        ),
+        'target_src' => array(
+            'description' => 'container of video',
+            'type' => 'text',
+            'not null' => TRUE,
+            'size' => 'big',
+        ),
+        'rangetime_start' => array(
+            'description' => 'starting time',
+            'type' => 'float',
+            'not null' => TRUE,
+            'default' => 0,
+        ),
+        'rangetime_end' => array(
+           'description' => 'ending time',
+            'type' => 'float',
+            'not null' => TRUE,
+            'default' => 0,
+        ),
+    ),
+    'foreign keys' => array(
+      'uid' => array(
+        'table' => 'users',
+        'columns' => array('uid' => 'uid'),
+      ),
+    ),
+    'primary key' => array('id'),
+  );
+  return $schema;
+}

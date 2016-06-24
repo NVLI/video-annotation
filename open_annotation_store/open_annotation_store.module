@@ -1,0 +1,167 @@
+<?php
+
+/**
+ * @file
+ * Render an VideoAnnotations as a tab at the left hand side of the content window.
+ */
+
+/**
+ * Implements hook_entity_info().
+ */
+function open_annotation_store_entity_info() {
+  $info = array();
+  $info['VideoAnnotation'] = array(
+    'label' => t('Project'),
+    'base table' => 'video_annotation',
+    'entity keys' => array(
+      'id' => 'id',
+    ),
+    'entity class' => 'Entity',
+    'controller class' => 'EntityAPIController',
+    'module' => 'open_annotation_store',
+  );
+  return $info;
+}
+
+/*
+ * Implements hook_menu().
+ */
+function open_annotation_store_menu() {
+  $items['annotations/apis/annotations'] = array(
+    'page callback' => 'store_annotations',
+    'access callback' => TRUE,
+    'access arguments' => array('', 'annotation', NULL),
+    'type' => MENU_CALLBACK,
+  );
+    $items['annotations/apis/search'] = array(
+    'title' => 'Video Annotations',
+    'page callback' => 'custom_annotator_call',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+    $items['admin/content/video-annotation'] = array(
+    'title' => 'Video Annotations',
+    'description' => 'Manage Annotations',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('videoanno_data'),
+    'access arguments' => array('view annotations'),
+    'type' => MENU_LOCAL_TASK | MENU_NORMAL_ITEM,
+    'file' => 'open_annotation_store.admin.inc',
+  );
+  $items['annotation/%/delete'] = array(
+    'load arguments' => array('annotation'),
+    'title' => 'Delete',
+    'page callback' => 'drupal_get_form',
+    'page arguments'  => array('video_annotation_delete_form', 1),
+    'access arguments' => array('delete', 1),
+    'access callback' => TRUE,
+    'weight' => 1,
+    'type' => MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
+    'file' => 'open_annotation_store.admin.inc',
+  );
+  return $items;
+}
+
+/*
+ * Implements hook_permission().
+ */
+function open_annotation_store_permission() {
+   return array(
+      'administer video annotations' => array(
+      'title' => t('Administer annotations'),
+      'description' => t('Allows users to administer annotations.'),
+      'restrict access' => TRUE,
+    ),
+  );
+}
+
+/**
+ * Page callback.
+ */
+function custom_annotator_call() {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'VideoAnnotation', '=');
+  $result = $query->execute();
+  $ids = array();
+  foreach ($result['VideoAnnotation'] as $record) {
+    $ids[] = $record->id;
+  }
+  $annotations = entity_load('VideoAnnotation', $ids);
+  $list = entity_view('VideoAnnotation', $annotations);
+  $output = array();
+  $res = array();
+// constructing an array and getting the output in json format.
+  foreach ($list['VideoAnnotation'] as $annotations) {
+    $res[] = array(
+                   'media' => $annotations['#entity']->media,
+                   'text' => $annotations['#entity']->text,
+                   'ranges' => array(),
+                   'uri' => $annotations['#entity']->uri,
+                   'id' => $annotations['#entity']->id,
+                   'target' => array(
+                      'container' => $annotations['#entity']->target_container,
+                      'ext' => $annotations['#entity']->target_ext,
+                      'src' => $annotations['#entity']->target_src,
+                    ),
+                   'rangeTime' => array(
+                                        'start' => $annotations['#entity']->rangetime_start,
+                                        "end" => $annotations['#entity']->rangetime_end
+                                        ),
+                   );
+    $output[] = drupal_render($annotations);
+  }
+  $ars = array('rows' => $res);
+  print json_encode($ars);
+  exit;
+}
+
+/**
+ * Annotation API main endpoint
+ */
+function store_annotations($id = NULL) {
+  $method = $_SERVER['REQUEST_METHOD'];
+  switch ($method) {
+    case 'POST':
+      video_annotation_api_create();
+      break;
+  }
+}
+
+/**
+ * Annotation API create
+ */
+function video_annotation_api_create() {
+  global $user;
+  $entity = annotation_api_from_stdins();
+  $entity->uid = $user->uid;
+  $entity->media = 'video';
+  $entity->target_container = $entity->target['container'];
+  $entity->target_ext = $entity->target['ext'];
+  $entity->target_src = $entity->target['src'];
+  $entity->rangetime_start = $entity->rangeTime['start'];
+  $entity->rangetime_end = $entity->rangeTime['end'];
+  $entity->type = 'video annotation';
+  $entity->created = REQUEST_TIME;
+  $entity->updated = REQUEST_TIME;
+  entity_save('VideoAnnotation', $entity);
+  return drupal_json_output($entity);
+}
+
+/**
+ * Get data from stdin
+ * @see http://php.net/manual/en/features.file-upload.put-method.php
+ */
+function annotation_api_from_stdins() {
+  $json = '';
+  // PUT data comes in on the stdin stream
+  $put = fopen('php://input', 'r');
+  // Read the data 1 KB at a time and write to the file
+  while ($chunk = fread($put, 1024)) {
+    $json .= $chunk;
+  }
+  fclose($put);
+
+  $entity = (object) drupal_json_decode($json);
+  return $entity;
+}
