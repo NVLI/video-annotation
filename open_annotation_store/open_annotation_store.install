@@ -52,13 +52,6 @@ function open_annotation_store_schema() {
             'not null' => TRUE,
             'sortable' => TRUE
         ),
-        'archived' => array(
-            'description' => 'whether archived or not',
-            'type' => 'varchar',
-            'length' => 32,
-            'not null' => TRUE,
-            'default' => '',
-        ),
         'created' => array(
             'description' => 'The creation datetime of the annotation.',
             'type' => 'int',
