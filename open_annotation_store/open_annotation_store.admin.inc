@@ -60,10 +60,32 @@ function videoanno_data($form, $form_state) {
    );
     $operations = array();
     if ($admin_access) {
-      $operations['delete'] = array(
+    $operations['delete'] = array(
         'title' => t('Delete'),
         'href' => 'annotation/' . $annotation->id . '/delete',
         'query' => $destination,
+      );
+    }
+    if (count($operations) > 1) {
+      // Render an unordered list of operations links.
+      $options[$annotation->id]['operations'] = array(
+        'data' => array(
+          '#theme' => 'links__file_entity_operations',
+          '#links' => $operations,
+          '#attributes' => array('class' => array('links', 'inline')),
+        ),
+      );
+    }
+    elseif (!empty($operations)) {
+      // Render the first and only operation as a link.
+      $link = reset($operations);
+      $options[$annotation->id]['operations'] = array(
+        'data' => array(
+          '#type' => 'link',
+          '#title' => $link['title'],
+          '#href' => $link['href'],
+          '#options' => array('query' => $link['query']),
+        ),
       );
     }
   }
