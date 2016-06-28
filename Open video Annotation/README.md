@@ -7,6 +7,7 @@ player.
 
 Download/Clone Open Video Annotation Library from github
 - [Link](https://github.com/CtrHellenicStudies/OpenVideoAnnotation)
+
 Download Videojs Drupal 8 module from drupal.org
 - [Link](https://www.drupal.org/project/videojs)
 
@@ -14,4 +15,3 @@ Download Videojs Drupal 8 module from drupal.org
 
 1. In your Drupal site, enable videojs module.
 2. Make sure libraries are kept in /modules/libraries.
-
