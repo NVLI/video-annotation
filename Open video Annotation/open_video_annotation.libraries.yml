@@ -12,8 +12,10 @@ open_video_annotation.load_player:
     /modules/libraries/OpenVideoAnnotation/lib/jquery.min.js: {}
     /modules/libraries/OpenVideoAnnotation/lib/annotator-full.js: {}
     /modules/libraries/OpenVideoAnnotation/lib/video-js/video.min.js: {}
+    /modules/libraries/OpenVideoAnnotation/lib/video-js/vjs.youtube.js: {}
     /modules/libraries/OpenVideoAnnotation/lib/rangeslider.min.js: {}
     /modules/libraries/OpenVideoAnnotation/lib/share-annotator.min.js: {}
     /modules/libraries/OpenVideoAnnotation/build/ova.min.js: {}
     /modules/libraries/OpenVideoAnnotation/build/addannotatebutton.js: {}
+    /modules/libraries/OpenVideoAnnotation/lib/jquery-noconflict.js: {}
 
