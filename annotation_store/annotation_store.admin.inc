@@ -5,7 +5,7 @@
  * Content builder functions for VideoAnnotations.
 */ 
 
-function videoanno_data($form, $form_state) {
+function video_annotation_store($form, $form_state) {
 
   $admin_access = user_access('administer video annotations');
 
@@ -130,7 +130,7 @@ function video_annotation_delete_form($form, &$form_state, $annotation) {
 }
 
 /**
- * Form submit
+ * Delete Form submit
  */
 function  video_annotation_delete_form_submit($form, &$form_state) {
   if ($form_state['values']['confirm'] && $annotation = entity_object_load($form_state['values']['id'], 'VideoAnnotation')) {

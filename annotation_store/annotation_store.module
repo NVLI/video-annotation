@@ -8,7 +8,7 @@
 /**
  * Implements hook_entity_info().
  */
-function open_annotation_store_entity_info() {
+function annotation_store_entity_info() {
   $info = array();
   $info['VideoAnnotation'] = array(
     'label' => t('Project'),
@@ -18,7 +18,7 @@ function open_annotation_store_entity_info() {
     ),
     'entity class' => 'Entity',
     'controller class' => 'EntityAPIController',
-    'module' => 'open_annotation_store',
+    'module' => 'annotation_store',
   );
   return $info;
 }
@@ -26,7 +26,7 @@ function open_annotation_store_entity_info() {
 /*
  * Implements hook_menu().
  */
-function open_annotation_store_menu() {
+function annotation_store_menu() {
   $items['annotations/apis/annotations'] = array(
     'page callback' => 'store_annotations',
     'access callback' => TRUE,
@@ -35,7 +35,7 @@ function open_annotation_store_menu() {
   );
     $items['annotations/apis/search'] = array(
     'title' => 'Video Annotations',
-    'page callback' => 'custom_annotator_call',
+    'page callback' => 'video_annotation_call',
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -43,10 +43,10 @@ function open_annotation_store_menu() {
     'title' => 'Video Annotations',
     'description' => 'Manage Annotations',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('videoanno_data'),
+    'page arguments' => array('video_annotation_store'),
     'access arguments' => array('view annotations'),
     'type' => MENU_LOCAL_TASK | MENU_NORMAL_ITEM,
-    'file' => 'open_annotation_store.admin.inc',
+    'file' => 'annotation_store.admin.inc',
   );
   $items['annotation/%/delete'] = array(
     'load arguments' => array('annotation'),
@@ -58,7 +58,7 @@ function open_annotation_store_menu() {
     'weight' => 1,
     'type' => MENU_LOCAL_TASK,
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
-    'file' => 'open_annotation_store.admin.inc',
+    'file' => 'annotation_store.admin.inc',
   );
   return $items;
 }
@@ -66,7 +66,7 @@ function open_annotation_store_menu() {
 /*
  * Implements hook_permission().
  */
-function open_annotation_store_permission() {
+function annotation_store_permission() {
    return array(
       'administer video annotations' => array(
       'title' => t('Administer annotations'),
@@ -77,9 +77,9 @@ function open_annotation_store_permission() {
 }
 
 /**
- * Page callback.
+ * Page callback for collecting entity type datas and store it in a array.
  */
-function custom_annotator_call() {
+function video_annotation_call() {
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'VideoAnnotation', '=');
   $result = $query->execute();

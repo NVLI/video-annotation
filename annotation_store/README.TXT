@@ -1,7 +1,7 @@
 
 -- SUMMARY --
 
-The open_annotation_store module is used to store annotate while the video is playing as like annotation module in drupal.It displays the entire video annotations.
+The annotation_store module is used to store annotate while the video is playing as like annotation module in drupal.It displays the entire video annotations.
 
 -- INSTALLATION --
 

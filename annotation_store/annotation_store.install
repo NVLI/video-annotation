@@ -8,7 +8,7 @@
 /**
  * Implements hook_schema().
  */
-function open_annotation_store_schema() {
+function annotation_store_schema() {
   $schema = array();
   $schema['video_annotation'] = array(
     'description' => 'Stores annotations.',
