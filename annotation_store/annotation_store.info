@@ -1,4 +1,0 @@
-name = Video Annotation Store
-description = Custom Video Annotation
-package = Annotation
-core = 7.x
