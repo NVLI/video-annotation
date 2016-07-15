@@ -150,17 +150,17 @@ player in code. The theme function has the following variables:
       ),
     ));
 
-## Videojs Player Textfield Formatter
+## Videojs Textfield Formatter
 
-- This Version Supports Videojs Player Textfield Formatter
-- Youtube Format only support when Enable Annotation Checkbox in Field Formatter
-  settings.
+- Field machine name must be "field_videojs_textfield". For future update this
+  field name can be changed by using settings/dynamic field names.
 - Select "Videojs Textfield Formatter" under Manage Display page along with
   Videojs Textfield
-- Using Videojs Player Textfield Formatter Currently mp4,youtube,webm,ogg Url's
-  are supported. 
-- Annotation Store Supported by using the below mentioned Drupal 8 module.
-  https://www.drupal.org/project/annotation_store
+- Using Videojs Textfield Formatter Currently mp4,youtube,webm,vimeo Url's are supported. 
+  This can be updated in future by providing settings page.
+- File/Video field only supports mp4 format while using videojs formatter.
+- Videojs TextField Formatter Supports Video Annotation with third party API.
+- We can modify the API by using Annoation Store Module in Drupal 8
 
 ## Support
 
