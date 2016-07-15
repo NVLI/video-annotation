@@ -184,15 +184,6 @@ class TextLinkFormatter extends FormatterBase implements ContainerFactoryPluginI
     foreach ($items as $delta => $item) {
       $video_uri = $item->getValue();
       $video_items[] = Url::fromUri(file_create_url($video_uri['value']));
-      /*
-      $valid_url = (pathinfo($video_items,PATHINFO_EXTENSION));
-      if($valid_url == 'mp4' || $valid_url == 'flv' || $valid_url == 'wmv'){
-       return TRUE;
-      }
-      else{
-       return FALSE;
-      }
-      */
       $var = $this->getSettings();
       $extract_extensions = explode(',', $var['extensions']);
       foreach ($extract_extensions as $key => $value) {

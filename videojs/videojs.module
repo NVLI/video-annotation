@@ -18,7 +18,11 @@ use Drupal\videojs\Plugin\Field\FieldFormatter;
 function videojs_theme() {
   return array(
     'videojs' => array(
-      'variables' => array('items' => NULL, 'player_extension' => NULL, 'player_attributes' => NULL),
+      'variables' => array(
+        'items' => NULL,
+        'player_extension' => NULL,
+        'player_attributes' => NULL,
+      ),
     ),
   );
 }
@@ -69,12 +73,5 @@ function videojs_preprocess_videojs(&$variables) {
 
   $node = \Drupal::routeMatch()->getParameter('node');
   $variables['get_nid'] = $node->id();
+
 }
-
-function videojs_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  //dpm($form_id);
-  }
-
-
-
-

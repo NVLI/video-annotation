@@ -7,14 +7,14 @@ var options = {
             store: {
                 // The endpoint of the store on your server.
                 //prefix: 'http://afstore.aws.af.cm/annotator',
-                prefix: window.location.protocol + "//" + window.location.host + '/annotations/apis',
+                prefix: 'http://danielcebrian.com/annotations/api',
 
                 annotationData: {
-                    uri: window.location.href
+                    uri: 'http://danielcebrian.com/annotations/demo.html'
                 },
                 loadFromSearch: {
                     limit: 10000,
-                    uri: window.location.href
+                    uri: 'http://danielcebrian.com/annotations/demo.html'
                 }
             },
             richText: {
