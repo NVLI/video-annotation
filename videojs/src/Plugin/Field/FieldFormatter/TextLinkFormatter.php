@@ -97,7 +97,6 @@ class TextLinkFormatter extends FormatterBase implements ContainerFactoryPluginI
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
 
-    //$config = \Drupal::service('config.factory')->getEditable('videojs.settings');
     $element['width'] = [
       '#title' => t('Width'),
       '#type' => 'textfield',

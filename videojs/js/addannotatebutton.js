@@ -7,7 +7,7 @@ var options = {
             store: {
                 // The endpoint of the store on your server.
                 //prefix: 'http://afstore.aws.af.cm/annotator',
-                prefix: 'http://danielcebrian.com/annotations/api',
+                prefix: window.location.protocol + "//" + window.location.host + '/annotations/apis',
 
                 annotationData: {
                     uri: 'http://danielcebrian.com/annotations/demo.html'
