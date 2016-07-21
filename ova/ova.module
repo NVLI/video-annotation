@@ -1,0 +1,83 @@
+<?php
+
+
+/**
+ * @file
+ * Open Video Annotation using videojs HTML5 player.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function ova_theme() {
+  return array(
+    'ovaAudio' => array(
+      'variables' => array(
+        'items' => NULL,
+        'player_extension' => NULL,
+        'player_attributes' => NULL,
+        'entity' => NULL,
+        'player_image_path' => NULL,
+      ),
+      'file' => 'ova.inc',
+    ),
+    'ovaVideo' => array(
+      'variables' => array(
+        'items' => NULL,
+        'player_extension' => NULL,
+        'player_attributes' => NULL,
+        'entity' => NULL,
+        'player_image_path' => NULL,
+      ),
+      'file' => 'ova.inc',
+    ),
+  );
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function ova_preprocess_ova(&$variables) {
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $variables['get_nid'] = $node->id();
+
+}
+
+/**
+ * Implements hook_annotation_store_search_endpoint_output_alter(&$entity).
+ */
+function ova_annotation_store_search_endpoint_output_alter(&$entity) {
+  $entity_annotations = $entity->content['data']['annotations'];
+  if($entity_annotations) {
+    foreach ($entity_annotations as $key => $value) {
+      $annotation_object = json_decode($value['data']);
+      if ($annotation_object->media == 'audio' ||  $annotation_object->media == 'video') {
+        $annotations = array(
+          'media' => $annotation_object->media,
+          'text' => $annotation_object->text,
+          'ranges' => array(),
+          'uri' => $annotation_object->uri,
+          'id' => $value,
+          'target' => array(
+            'container' => $annotation_object->target->container,
+            'ext' => $annotation_object->target->ext,
+            'src' => $annotation_object->target->src,
+           ),
+          'rangeTime' => array(
+            'start' => $annotation_object->rangeTime->start,
+            "end" => $annotation_object->rangeTime->end
+          ),
+        );
+        $convert_string .= json_encode($annotations);
+        $convert_string .= ',';
+      }
+    }
+    $annotations = rtrim($convert_string, ",");
+    $annotations = '{"rows":[' . $annotations . ']}';
+  }
+  else {
+    $annotations = '{"permissions":{"read":[],"update":[],"delete":[],"admin":[]},"ranges":[],"quote":"","text":"dummy","media":"video","target":{"container":"vjs_video_dummy","src":"http:\/\/dummy.com\/dummy.mp4","ext":".mp4"},"rangeTime":{"start":3.14796,"end":4.65196},"updated":"2016-07-08T07:23:10.147Z","created":"2016-07-08T07:23:10.147Z","uri":"http:\/\/dummy.com\/dummy\/1","id":"1"}';
+  }
+  $entity->content['data']['annotations'] = $annotations;
+}
