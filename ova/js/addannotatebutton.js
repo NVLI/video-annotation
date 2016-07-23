@@ -1,16 +1,14 @@
 //Options to load in Open Video Annotation, for all the plugins
 (function($, Drupal, undefined){
 var resource_entity_id = drupalSettings.ova_annotation.annotation_settings;
+//alert(annotationSettings);
 var options = {
         optionsAnnotator: {
             permissions: {},
-            //auth: {tokenUrl:'http://catch.aws.af.cm/annotator/token'},
             store: {
                 // The endpoint of the store on your server.
                 prefix: window.location.protocol + "//" + window.location.host + '/annotation-store/api',
-
                 annotationData: {
-                    //uri: 'http://danielcebrian.com/annotations/demo.html'
                     uri: window.location.href
                 },
                 loadFromSearch: {
@@ -20,10 +18,10 @@ var options = {
                 },
                 urls: {
                   // These are the default URLs.
-                  create:  '/annotations/',
-                  update:  '/annotations/:id',
-                  destroy: '/annotations/:id',
-                  search:  '/search'
+                  create:  '/'+resource_entity_id,
+                  update:  '/annotation-store/api/:id',
+                  destroy: '/annotation-store/api/:id',
+                  search:  '/'+resource_entity_id
                 }
             },
             richText: {
@@ -47,6 +45,8 @@ var options = {
             posBigNew: 'none' /*,NumAnnotations:20*/
         }
 }
+
+
     //Load the plugin Open Video Annotation
 var ova = new OpenVideoAnnotation.Annotator($('#airlock'), options);
 //change the user (Experimental)

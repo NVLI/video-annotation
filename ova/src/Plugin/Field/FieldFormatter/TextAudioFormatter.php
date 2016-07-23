@@ -88,7 +88,7 @@ class TextAudioFormatter extends FormatterBase implements ContainerFactoryPlugin
       'annotations' => FALSE,
       'extensions' => 'mp3',
       'preload' => 'auto',
-      'default_image' => '/modules/contrib/ova/images.jpg',
+      'default_image' => '/modules/contrib/ova/audio.jpg',
     ) + parent::defaultSettings();
   }
 
@@ -199,7 +199,7 @@ class TextAudioFormatter extends FormatterBase implements ContainerFactoryPlugin
         }
       }
     }
-    $default_image_path = $base_url . '/modules/contrib/ova/images.jpg';
+    $default_image_path = $base_url . '/modules/contrib/ova/audio.jpg';
     if (isset($video_uri['value']) && ($this->getSetting('annotations') == 0)) {
       $elements[] = array(
         '#theme' => 'ovaAudio',
